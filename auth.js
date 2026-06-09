@@ -107,3 +107,58 @@ if (formularioRegistro) {
       }
     });
   }
+//PROCESAR PIN//
+  if (formularioPin) {
+    formularioPin.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const pin = document.getElementById('pinIngreso').value;
+
+      if (pin === "0000") {
+        const usuarioDemo = {
+          nombre: "Usuario Desarrollador",
+          correo: "dev@secayax.com",
+          finca: "Finca Cafetera Demo"
+        };
+        entrarAApp(usuarioDemo);
+        formularioPin.reset();
+        return;
+      }
+
+      try {
+        const respuestaPin = await fetch(${URL_API}/ingreso-pin, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pin })
+        });
+        
+        const dataPin = await respuestaPin.json();
+        if (!respuestaPin.ok) throw new Error(dataPin.error || 'PIN no válido.');
+
+        entrarAApp(dataPin.usuario);
+        formularioPin.reset();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  }
+
+  // mostrar interfaz de la aplicacion//
+  function entrarAApp(usuario) {
+    if (puertaAutenticacion) puertaAutenticacion.classList.add('oculto');
+    if (aplicacionPrincipal) aplicacionPrincipal.classList.remove('oculto');
+    if (navegacionInferior) navegacionInferior.classList.remove('navegacion-oculta');
+
+    const perfilNombre = document.getElementById('perfilNombre');
+    const perfilEmail = document.getElementById('perfilEmail');
+    const perfilFinca = document.getElementById('perfilFinca');
+    const ultimaSync = document.getElementById('ultimaSync');
+
+    if (perfilNombre) perfilNombre.textContent = usuario.nombre || '—';
+    if (perfilEmail) perfilEmail.textContent = usuario.correo || '—';
+    if (perfilFinca) perfilFinca.textContent = usuario.finca || '—';
+    if (ultimaSync) {
+      const ahora = new Date();
+      ultimaSync.textContent = ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+  }
+});
