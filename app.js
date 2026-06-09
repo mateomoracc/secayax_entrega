@@ -117,6 +117,30 @@ document.addEventListener('DOMContentLoaded', () => {
     mostrarAviso('Techo abierto exitosamente');
   });
 
+  // secado automatico //
+  secadoAuto.addEventListener('change', (e) => {
+    toggleControlesManuales(e.target.checked);
+    if (e.target.checked) {
+      mensajeEstado.textContent = 'Modo Inteligente Activo: La IA controlará el techo según el clima.';
+      mostrarAviso('Secado automatizado ACTIVADO');
+      analizarIA();
+    } else {
+      mensajeEstado.textContent = 'Modo manual activo. Controla el techo con los botones.';
+      mostrarAviso('Modo manual activado');
+    }
+  });
+
+  if (btnLimpiarNotif && listaNotificaciones) {
+    btnLimpiarNotif.addEventListener('click', () => {
+      listaNotificaciones.innerHTML = '';
+      mostrarAviso('Notificaciones eliminadas');
+    });
+  }
+
+  if (anilloProgreso) anilloProgreso.style.setProperty('--progreso', '75');
+  actualizarGaugeLluvia(30);
+  toggleControlesManuales(secadoAuto ? secadoAuto.checked : true);
+  
   btnCerrarTecho.addEventListener('click', () => {
     estadoTecho.textContent = 'Cerrado';
     valorProgreso.textContent = '0%';
