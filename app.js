@@ -124,3 +124,35 @@ document.addEventListener('DOMContentLoaded', () => {
     mensajeEstado.textContent = 'Techo cerrado para proteger el café de la humedad o lluvia.';
     mostrarAviso('Techo cerrado para protección');
   });
+
+  // navegacion de paneles //
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      navItems.forEach(i => i.classList.remove('activo'));
+      item.classList.add('activo');
+
+      const panelObjetivo = item.getAttribute('data-panel');
+
+      panelNotif.classList.add('oculto');
+      panelPerfil.classList.add('oculto');
+
+      if (panelObjetivo === 'notificaciones') {
+        panelNotif.classList.remove('oculto');
+      } else if (panelObjetivo === 'perfil') {
+        panelPerfil.classList.remove('oculto');
+      }
+    });
+  });
+
+  // botones de volver //
+  botonesCerrar.forEach(boton => {
+    boton.addEventListener('click', () => {
+      panelNotif.classList.add('oculto');
+      panelPerfil.classList.add('oculto');
+
+      navItems.forEach(i => i.classList.remove('activo'));
+      // Corrección de bug visual: 'active' por 'activo'
+      const inicioBtn = document.querySelector('[data-panel="inicio"]');
+      if (inicioBtn) inicioBtn.classList.add('activo');
+    });
+  });
