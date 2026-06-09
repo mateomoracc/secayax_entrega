@@ -156,3 +156,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (inicioBtn) inicioBtn.classList.add('activo');
     });
   });
+ // cerrar sesion //
+  const btnCerrarSesion = document.getElementById('btnCerrarSesion');
+  const puertaAutenticacion = document.getElementById('puertaAutenticacion');
+  const aplicacionPrincipal = document.getElementById('aplicacionPrincipal');
+  const navegacionInferior = document.getElementById('navegacionInferior');
+  
+  if (btnCerrarSesion) {
+    btnCerrarSesion.addEventListener('click', () => {
+      aplicacionPrincipal.classList.add('oculto');
+      navegacionInferior.classList.add('navegacion-oculta');
+      puertaAutenticacion.classList.remove('oculto');
+      
+      document.getElementById('panelPerfil').classList.add('oculto');
+      document.getElementById('panelNotificaciones').classList.add('oculto');
+      
+      console.log("Sesión cerrada localmente.");
+    });
+  }
